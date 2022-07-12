@@ -1,0 +1,16 @@
+### getToken(login)
+POST http://localhost:9090/user/login
+Content-Type: application/json
+
+{
+  "username": "ddi",
+  "password": "bbf8a90fa5fac8edb22ccd3d4c7da8fb085c9d33"
+}
+
+> {% client.global.set("auth_token", response.body.json.data.token); %}
+
+### getUserInfo
+GET http://localhost:9090/user/info
+Authorization: Bearer {{auth_token}}
+
+###

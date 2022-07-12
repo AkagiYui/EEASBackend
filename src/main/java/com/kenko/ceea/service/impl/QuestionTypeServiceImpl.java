@@ -1,0 +1,18 @@
+package com.kenko.ceea.service.impl;
+
+
+import cn.hutool.log.Log;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.kenko.ceea.entity.QuestionType;
+import com.kenko.ceea.mapper.QuestionTypeMapper;
+import com.kenko.ceea.service.IQuestionTypeService;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class QuestionTypeServiceImpl extends ServiceImpl<QuestionTypeMapper, QuestionType> implements IQuestionTypeService {
+
+    private static final Log log = Log.get();
+
+
+}

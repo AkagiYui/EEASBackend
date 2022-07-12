@@ -1,0 +1,6 @@
+FROM openjdk:8-jre-slim
+ADD ./target/release.jar /
+WORKDIR /
+EXPOSE 9090
+VOLUME /data
+ENTRYPOINT ["java", "-jar", "release.jar", "--spring.profiles.active=prod"]

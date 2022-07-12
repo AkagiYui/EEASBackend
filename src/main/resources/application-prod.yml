@@ -1,0 +1,12 @@
+server:
+  port: 9090
+
+files:
+  upload:
+    path: ./data
+
+spring:
+  datasource:
+    url: jdbc:mysql://dzf.434512.xyz:3306/ceea-dev?serverTimezone=GMT%2b8
+    username: ceea-dev
+    password: ceea-dev
