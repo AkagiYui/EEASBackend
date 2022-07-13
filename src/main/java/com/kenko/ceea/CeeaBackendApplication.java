@@ -1,5 +1,6 @@
 package com.kenko.ceea;
 
+import com.kenko.ceea.common.Result;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,7 @@ public class CeeaBackendApplication {
     }
 
     @GetMapping("/")
-    public String hello() {
-        int i = 1 / 0;
-        return "CEEA Backend Application. ";
+    public Result hello() {
+        return Result.success("CEEA Backend Application. ");
     }
 }

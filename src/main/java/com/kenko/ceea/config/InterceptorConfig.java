@@ -1,5 +1,6 @@
 package com.kenko.ceea.config;
 
+import com.kenko.ceea.config.interceptor.CustomInterceptor;
 import com.kenko.ceea.config.interceptor.JwtInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(customInterceptor())
+                .addPathPatterns("/**");
         registry.addInterceptor(jwtInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/user/login", "/survey/submit/*", "/survey/sheet/*")
@@ -19,5 +22,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Bean
     public JwtInterceptor jwtInterceptor() {
         return new JwtInterceptor();
+    }
+
+    @Bean
+    public CustomInterceptor customInterceptor() {
+        return new CustomInterceptor();
     }
 }

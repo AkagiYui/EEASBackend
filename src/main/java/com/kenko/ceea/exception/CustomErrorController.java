@@ -34,14 +34,14 @@ public class CustomErrorController extends BasicErrorController {
         super(new DefaultErrorAttributes(), serverProperties.getError());
     }
 
-    // 覆盖默认的JSON响应
+    // 重写 postman请求的JSON响应
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         Result result = Result.error(Constants.CODE_404, "Api not found");
         return new ResponseEntity<>(result.toMap(), HttpStatus.NOT_FOUND);
     }
 
-    // 覆盖默认的HTML响应
+    // 重写 浏览器请求的HTML响应
     @Override
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         // TODO: web访问时的错误处理

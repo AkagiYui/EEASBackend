@@ -2,6 +2,7 @@ package com.kenko.ceea.common;
 
 public interface Constants {
     Integer CODE_200 = 200; // 成功
+    Integer CODE_201 = 201; // 不需改变
 
     Integer CODE_400 = 400; // 参数错误
     Integer CODE_404 = 404; // 没有找到资源

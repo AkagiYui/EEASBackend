@@ -33,7 +33,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 获取 token
         String token = request.getHeader("Authorization");
-        if (StrUtil.isNotBlank(token) && token.startsWith("Bearer ")) {
+        if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
         if (StrUtil.isBlank(token)) {
