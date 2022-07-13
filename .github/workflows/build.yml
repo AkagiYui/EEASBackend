@@ -54,7 +54,7 @@ jobs:
           cp target/release.jar dist/release.jar
           cp Dockerfile.deploy dist/Dockerfile.deploy
 
-      - name: Send Artifact Server
+      - name: Send to Server
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
@@ -70,10 +70,10 @@ jobs:
         with:
           command: |
             cd ${{ secrets.REMOTE_TARGET }}
-            docker build -f Dockerfile.deploy -t ceea-backend:latest .
+            docker build -f Dockerfile.deploy -t ceea-backend .
             rm release.jar Dockerfile.deploy
             docker container rm -f ceea-backend
-            docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ceea-backend:latest
+            docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ceea-backend
             docker image prune -f
             docker volume prune -f
           host: ${{ secrets.SERVER_HOST }}
