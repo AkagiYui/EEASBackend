@@ -21,4 +21,4 @@ jobs:
         with:
           name: jar-package
 
-      -run: ls -R
+      - run: ls -R
