@@ -29,3 +29,19 @@ jobs:
           name: jar-package
           path: target/release.jar
           if-no-files-found: error
+
+      - run: |
+          mkdir dist
+          cp target/release.jar dist/release.jar
+          cp Dockerfile.deploy dist/Dockerfile.deploy
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+          EXCLUDE: "/dist/, /node_modules/"
