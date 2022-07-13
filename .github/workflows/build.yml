@@ -30,37 +30,52 @@ jobs:
           path: target/release.jar
           if-no-files-found: error
 
-      - name: Build Docker Image
-        run: |
-          docker build -f Dockerfile.deploy -t ceea-backend:latest .
-          docker tag ceea-backend:latest ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
-          docker push ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+#      - name: Build Docker Image
+#        run: |
+#          docker build -f Dockerfile.deploy -t ceea-backend:latest .
+#          docker tag ceea-backend:latest ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+#          docker push ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+#
+#      - name: Deploy Container
+#        uses: fifsky/ssh-action@master
+#        with:
+#          command: |
+#            docker pull ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+#            docker container rm -f ceea-backend
+#            docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+#            docker image prune -f
+#            docker volume prune -f
+#          host: ${{ secrets.SERVER_HOST }}
+#          user: ${{ secrets.SERVER_USER }}
+#          key: ${{ secrets.SERVER_SSH_KEY}}
+
+      - run: |
+          mkdir dist
+          cp target/release.jar dist/release.jar
+          cp Dockerfile.deploy dist/Dockerfile.deploy
+
+      - name: Send Artifact Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+          EXCLUDE: "/dist/, /node_modules/"
 
       - name: Deploy Container
         uses: fifsky/ssh-action@master
         with:
           command: |
-            docker pull ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+            cd ${{ secrets.REMOTE_TARGET }}
+            docker build -f Dockerfile.deploy -t ceea-backend:latest .
+            rm release.jar Dockerfile.deploy
             docker container rm -f ceea-backend
-            docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ${{ secrets.DOCKER_REGISTRY }}/ceea-backend:latest
+            docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ceea-backend:latest
             docker image prune -f
             docker volume prune -f
           host: ${{ secrets.SERVER_HOST }}
           user: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY}}
-
-#      - run: |
-#          mkdir dist
-#          cp target/release.jar dist/release.jar
-#          cp Dockerfile.deploy dist/Dockerfile.deploy
-#
-#      - name: Deploy to Server
-#        uses: easingthemes/ssh-deploy@main
-#        env:
-#          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-#          ARGS: "-rltgoDzvO --delete"
-#          SOURCE: "dist/"
-#          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-#          REMOTE_USER: ${{ secrets.SERVER_USER }}
-#          TARGET: ${{ secrets.REMOTE_TARGET }}
-#          EXCLUDE: "/dist/, /node_modules/"
