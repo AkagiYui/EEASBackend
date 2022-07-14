@@ -3,6 +3,7 @@ package com.kenko.ceea.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.Log;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.kenko.ceea.entity.Teacher;
@@ -19,6 +20,7 @@ import java.util.Date;
 @Component
 public class TokenUtils {
 
+    private static final Log log = Log.get();
     private static ITeacherService staticTeacherService;
     @Resource
     private ITeacherService teacherService;
@@ -36,8 +38,9 @@ public class TokenUtils {
 
     public static Teacher getCurrentTeacher() {
         try {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                    .getRequest();
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            assert requestAttributes != null;
+            HttpServletRequest request = requestAttributes.getRequest();
             String token = request.getHeader("Authorization");
             if (StrUtil.isNotBlank(token)) {
                 String teacherId = JWT.decode(token).getAudience().get(0);

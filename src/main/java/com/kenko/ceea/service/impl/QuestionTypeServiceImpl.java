@@ -11,8 +11,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionTypeServiceImpl extends ServiceImpl<QuestionTypeMapper, QuestionType> implements IQuestionTypeService {
-
-    private static final Log log = Log.get();
-
-
 }

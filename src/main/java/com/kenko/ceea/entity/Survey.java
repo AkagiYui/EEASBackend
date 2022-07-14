@@ -11,8 +11,8 @@ public class Survey {
     private String title;
     private String description;
     private String password;
-//    private LocalDateTime startTime;
-//    private LocalDateTime endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private Boolean isActive;
     private Boolean isDeleted;
     private LocalDateTime createTime;

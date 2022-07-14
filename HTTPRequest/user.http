@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "username": "ddi",
-  "password": "bbf8a90fa5fac8edb22ccd3d4c7da8fb085c9d33"
+  "password": "157e4fc9cead4d44332b98f72cdc37ce2707e7e3"
 }
 
 > {% client.global.set("auth_token", response.body.json.data.token); %}

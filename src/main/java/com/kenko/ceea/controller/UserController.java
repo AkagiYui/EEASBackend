@@ -52,7 +52,7 @@ public class UserController {
     @Value("${spring.profiles.active}")
     private String isDev;
 
-    // 临时增加测试用户，后期请看情况删除
+    // 用户注册
     @PostMapping("/register")
     public Result addUser(@RequestBody Teacher teacher) {
         if (isDev.equals("prod")) {
