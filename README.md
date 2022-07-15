@@ -8,7 +8,12 @@
 
 ## 更新日志 [Changelog](Changelog.md)
 
-## 注意事项
+## 待办事项 Todo
+
+- [ ] 降低 JWT 耦合性
+- [ ] 补充API文档注解
+
+## 注意事项 Tips
 
 由于这是本人的第一个SpringBoot项目，
 各种不规范请**指出**。

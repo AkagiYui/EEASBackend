@@ -18,17 +18,16 @@ public class Result {
     private String msg;
     private Object data;
 
-
     public static Result success() {
-        return new Result(Constants.CODE_200, "", null);
+        return new Result(HTTPCode.SUCCESS, "", null);
     }
 
     public static Result success(Object data) {
-        return new Result(Constants.CODE_200, "", data);
+        return new Result(HTTPCode.SUCCESS, "", data);
     }
 
     public static Result error() {
-        return new Result(Constants.CODE_500, "系统错误", null);
+        return new Result(HTTPCode.SYSTEM_ERROR, "系统错误", null);
     }
     public static Result error(Integer code) {
         return new Result(code, "", null);

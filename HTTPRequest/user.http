@@ -3,7 +3,7 @@ POST http://localhost:9090/user/login
 Content-Type: application/json
 
 {
-  "username": "ddi",
+  "username": "ddi1",
   "password": "157e4fc9cead4d44332b98f72cdc37ce2707e7e3"
 }
 

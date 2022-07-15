@@ -1,7 +1,7 @@
 package com.kenko.ceea.exception;
 
 import cn.hutool.log.Log;
-import com.kenko.ceea.common.Constants;
+import com.kenko.ceea.common.HTTPCode;
 import com.kenko.ceea.common.Result;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -37,7 +37,7 @@ public class CustomErrorController extends BasicErrorController {
     // 重写 postman请求的JSON响应
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
-        Result result = Result.error(Constants.CODE_404, "Api not found");
+        Result result = Result.error(HTTPCode.NOT_FOUND, "Api not found");
         return new ResponseEntity<>(result.toMap(), HttpStatus.NOT_FOUND);
     }
 

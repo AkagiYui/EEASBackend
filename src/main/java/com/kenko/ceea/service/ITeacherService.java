@@ -6,9 +6,9 @@ import com.kenko.ceea.entity.Teacher;
 
 
 public interface ITeacherService extends IService<Teacher> {
-
-    String login(LoginVO teacher);
-
     Boolean register(Teacher teacher);
 
+    Teacher getOneTeacher(LoginVO teacher);
+
+    Boolean usernameExist(String username);
 }

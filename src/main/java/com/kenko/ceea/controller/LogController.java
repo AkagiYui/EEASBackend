@@ -19,7 +19,7 @@ public class LogController {
     private ILogService logService;
 
     @GetMapping("/page/{pageNum}/{pageSize}")
-    public Result getSurveyList(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+    public Result getLogList(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
         QueryWrapper<Log> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("create_time");
         Page<Log> page = logService.page(new Page<>(pageNum, pageSize), queryWrapper);

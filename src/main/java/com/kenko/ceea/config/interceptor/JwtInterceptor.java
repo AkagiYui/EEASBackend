@@ -6,7 +6,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.kenko.ceea.common.Constants;
+import com.kenko.ceea.common.HTTPCode;
 import com.kenko.ceea.entity.Teacher;
 import com.kenko.ceea.exception.ServiceException;
 import com.kenko.ceea.service.ITeacherService;
@@ -37,7 +37,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             token = token.substring(7);
         }
         if (StrUtil.isBlank(token)) {
-            throw new ServiceException(Constants.CODE_401, "token不能为空");
+            throw new ServiceException(HTTPCode.NOT_PERMIT, "token不能为空");
         }
 
         // 校验 jwt 合法性
@@ -45,19 +45,19 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             teacherId = JWT.decode(token).getAudience().get(0);
         } catch (JWTDecodeException e) {
-            throw new ServiceException(Constants.CODE_401, "token无效");
+            throw new ServiceException(HTTPCode.NOT_PERMIT, "token无效");
         }
 
         // 验证 jwt 信息
         Teacher user = teacherService.getById(teacherId);
         if (user == null) {
-            throw new ServiceException(Constants.CODE_401, "用户不存在");
+            throw new ServiceException(HTTPCode.NOT_PERMIT, "用户不存在");
         }
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
         try {
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            throw new ServiceException(Constants.CODE_401, "token无效");
+            throw new ServiceException(HTTPCode.NOT_PERMIT, "token无效");
         }
 
         return true;

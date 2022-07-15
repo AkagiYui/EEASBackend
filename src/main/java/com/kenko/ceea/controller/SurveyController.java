@@ -4,7 +4,7 @@ import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.kenko.ceea.common.Constants;
+import com.kenko.ceea.common.HTTPCode;
 import com.kenko.ceea.common.Result;
 import com.kenko.ceea.controller.dto.*;
 import com.kenko.ceea.controller.vo.QuestionVO;
@@ -99,7 +99,7 @@ public class SurveyController {
         if (surveyService.save(newSurvey)) {
             return Result.success(idStr);
         }
-        return Result.error(Constants.CODE_500, "创建失败");
+        return Result.error(HTTPCode.SYSTEM_ERROR, "创建失败");
     }
 
     // 删除问卷
@@ -107,7 +107,7 @@ public class SurveyController {
     public Result deleteSurvey(@PathVariable String id) {
         Survey one = getNotDeletedSurvey(id, false, true);
         if (one == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
         one.setIsDeleted(true);
         return Result.success(surveyService.updateById(one));
@@ -118,10 +118,10 @@ public class SurveyController {
     public Result switchSurveyStatus(@PathVariable String id, @PathVariable Boolean active) {
         Survey one = getNotDeletedSurvey(id, false, true);
         if (one == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
         if (one.getIsActive() == active) {
-            return Result.error(Constants.CODE_201, "问卷状态已经是该状态");
+            return Result.error(HTTPCode.NOTHING_CHANGE, "问卷状态已经是该状态");
         }
         one.setIsActive(active);
         return Result.success(surveyService.updateById(one));
@@ -135,7 +135,7 @@ public class SurveyController {
         // 获取问卷
         Survey one = getNotDeletedSurvey(id, false, true);
         if (one == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
         BeanUtils.copyProperties(one, surveyDetailDTO);
         surveyDetailDTO.setQuestionTypes(questionTypeService.list());
@@ -148,7 +148,7 @@ public class SurveyController {
     public Result setSurveyDetail(@PathVariable String id, @RequestBody @NotNull SurveyDetailVO surveyDetailVO) {
         Survey one = getNotDeletedSurvey(id, false, true);
         if (one == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
         if (surveyDetailVO.getTitle() != null && !surveyDetailVO.getTitle().isEmpty()) {
             one.setTitle(surveyDetailVO.getTitle());
@@ -158,7 +158,7 @@ public class SurveyController {
         }
         one.setPassword(surveyDetailVO.getPassword());
         if (!surveyService.updateById(one)) {
-            return Result.error(Constants.CODE_500, "问卷信息修改失败");
+            return Result.error(HTTPCode.SYSTEM_ERROR, "问卷信息修改失败");
         }
 
         // 修改问题
@@ -186,14 +186,14 @@ public class SurveyController {
                 question.setQuestionTypeId(questionDTO.getType());
                 question.setContent(questionDTO.getContent());
                 if (!questionService.save(question)) {
-                    return Result.error(Constants.CODE_500, "问题新增失败");
+                    return Result.error(HTTPCode.SYSTEM_ERROR, "问题新增失败");
                 }
             } else {
                 // 问题存在，则修改问题
                 question.setContent(questionDTO.getContent());
                 question.setNumber(i + 1);
                 if (!questionService.updateById(question)) {
-                    return Result.error(Constants.CODE_500, "问题信息修改失败");
+                    return Result.error(HTTPCode.SYSTEM_ERROR, "问题信息修改失败");
                 }
             }
 
@@ -224,14 +224,14 @@ public class SurveyController {
                     choice.setContent(choiceDTO.getContent());
                     choice.setCount(0);
                     if (!choiceService.save(choice)) {
-                        return Result.error(Constants.CODE_500, "选项新增失败");
+                        return Result.error(HTTPCode.SYSTEM_ERROR, "选项新增失败");
                     }
                 } else {
                     // 选项存在，则修改选项
                     choice.setContent(choiceDTO.getContent());
                     choice.setNumber(j + 1);
                     if (!choiceService.updateById(choice)) {
-                        return Result.error(Constants.CODE_500, "选项信息修改失败");
+                        return Result.error(HTTPCode.SYSTEM_ERROR, "选项信息修改失败");
                     }
                 }
             }
@@ -245,7 +245,7 @@ public class SurveyController {
     public Result getAnswerData(@PathVariable String id) {
         Survey survey = getNotDeletedSurvey(id, false, true);
         if (survey == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
 
         SurveyDataDTO result = new SurveyDataDTO();
@@ -293,11 +293,11 @@ public class SurveyController {
     public Result getSurveySheet(@PathVariable String id, @RequestParam(required = false) String password) {
         Survey one = getNotDeletedSurvey(id, true, false);
         if (one == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
         if (one.getPassword() != null && !one.getPassword().equals("")) {
             if (!one.getPassword().equals(password)) {
-                return Result.error(Constants.CODE_401, "密码错误");
+                return Result.error(HTTPCode.NOT_PERMIT, "密码错误");
             }
         }
         SheetDTO sheetDTO = new SheetDTO();
@@ -312,11 +312,11 @@ public class SurveyController {
     public Result submitAnswer(@PathVariable String id, @RequestBody @NotNull SurveySubmitVO surveySubmitVO) {
         Survey one = getNotDeletedSurvey(id, true, false);
         if (one == null) {
-            return Result.error(Constants.CODE_404, "问卷不存在");
+            return Result.error(HTTPCode.NOT_FOUND, "问卷不存在");
         }
         if (one.getPassword() != null && !one.getPassword().equals("")) {
             if (!one.getPassword().equals(surveySubmitVO.getPassword())) {
-                return Result.error(Constants.CODE_401, "密码错误");
+                return Result.error(HTTPCode.NOT_PERMIT, "密码错误");
             }
         }
 

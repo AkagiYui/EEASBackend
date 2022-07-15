@@ -26,3 +26,17 @@ log:
 logging:
   level:
     root: info
+
+springdoc:
+  api-docs:
+    # 是否开启文档功能
+    enabled: true
+    # api json 文档
+    path: /v3/api-docs
+  swagger-ui:
+    # 自定义swagger前端请求路径，访问 /docs 会自动重定向到swagger页面
+    path: /docs
+    # 默认查询的 api json 地址
+    config-url: /v3/api-docs
+  # 包扫描路径
+  packages-to-scan: com.kenko.ceea.controller

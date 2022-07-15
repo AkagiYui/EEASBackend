@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static com.kenko.ceea.common.Constants.CODE_500;
+import static com.kenko.ceea.common.HTTPCode.SYSTEM_ERROR;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +23,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result handleException(Exception e) {
         log.error("Exception", e);
-        return Result.error(CODE_500, "System error");
+        return Result.error(SYSTEM_ERROR, "System error");
     }
 }
