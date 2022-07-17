@@ -16,16 +16,17 @@ jobs:
         with:
           command: |
             cd /home/ceea
-            git clone https://gitclone.com/github.com/AkagiYui/EEASBackend.git build
+            rm -rf build
+            git clone https://ghproxy.com/https://github.com/AkagiYui/EEASBackend.git build
             cd build
             chmod +x ./gradlew
             ./gradlew build bootJar
             mv ./build/libs/EEASBackend.jar ./release.jar
-            docker build -f Dockerfile.deploy -t EEASBackend .
+            docker build -f Dockerfile.deploy -t eeas-backend .
             cd ..
             rm -rf build
             docker container rm -f EEASBackend
-            docker run -d --name EEASBackend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 EEASBackend
+            docker run -d --name EEASBackend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 eeas-backend
             docker image prune -f
             docker volume prune -f
           host: ${{ secrets.SERVER_HOST }}
