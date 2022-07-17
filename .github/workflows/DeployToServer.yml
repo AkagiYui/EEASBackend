@@ -18,7 +18,6 @@ jobs:
             cd /home/ceea
             git clone https://ghproxy.com/https://github.com/AkagiYui/https://github.com/AkagiYui/EEASBackend.git build
             cd build
-#            mvn -B install --file pom.xml
             chmod +x ./gradlew
             ./gradlew build bootJar
             mv ./build/libs/EEASBackend.jar ./release.jar
