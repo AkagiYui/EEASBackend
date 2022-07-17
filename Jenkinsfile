@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh 'docker build -f Dockerfile.deploy -t ceea-backend:latest .'
                 sh 'docker container rm -f ceea-backend'
-                sh 'docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/backend:/data -p 9090:9090 ceea-backend'
+                sh 'docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ceea-backend'
             }
         }
         stage('清理') {

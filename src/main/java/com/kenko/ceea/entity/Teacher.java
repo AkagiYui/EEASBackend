@@ -16,4 +16,5 @@ public class Teacher {
     private String email;
     private String phone;
     private Boolean isActive;
+    private Boolean isAdmin;
 }

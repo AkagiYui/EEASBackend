@@ -1,16 +1,27 @@
 ### getToken(login)
-POST http://localhost:9090/user/login
+POST http://{{host}}/user/login
 Content-Type: application/json
 
 {
-  "username": "ddi1",
+  "username": "ddi",
   "password": "157e4fc9cead4d44332b98f72cdc37ce2707e7e3"
 }
 
-> {% client.global.set("auth_token", response.body.json.data.token); %}
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.code === 200, "Response status is not 200");
+});
+client.global.set("auth_token", response.body.data);
+%}
 
 ### getUserInfo
 GET http://localhost:9090/user/info
 Authorization: Bearer {{auth_token}}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.code === 200, "Response status is not 200");
+});
+%}
 
 ###

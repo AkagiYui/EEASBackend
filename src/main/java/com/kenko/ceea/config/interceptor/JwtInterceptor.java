@@ -1,6 +1,7 @@
 package com.kenko.ceea.config.interceptor;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.Log;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -23,6 +24,8 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Autowired
     private ITeacherService teacherService;
+
+    private static final Log log = Log.get();
 
     @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
@@ -51,7 +54,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 验证 jwt 信息
         Teacher user = teacherService.getById(teacherId);
         if (user == null) {
-            throw new ServiceException(HTTPCode.NOT_PERMIT, "用户不存在");
+            throw new ServiceException(HTTPCode.NOT_PERMIT, "token无效"); // 用户不存在
         }
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
         try {

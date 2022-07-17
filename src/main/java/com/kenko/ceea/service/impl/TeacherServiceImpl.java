@@ -1,7 +1,6 @@
 package com.kenko.ceea.service.impl;
 
 
-import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kenko.ceea.common.HTTPCode;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> implements ITeacherService {
-
-    private static final Log log = Log.get();
 
     @Override
     public Boolean register(Teacher teacher) {
@@ -32,7 +29,6 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
-            log.error(e);
             throw new ServiceException(HTTPCode.SYSTEM_ERROR, "系统错误");
         }
     }
@@ -45,7 +41,6 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         try {
             return getOne(queryWrapper);
         } catch (Exception e) {
-            log.error(e);
             throw new ServiceException(HTTPCode.SYSTEM_ERROR, "系统错误");
         }
     }

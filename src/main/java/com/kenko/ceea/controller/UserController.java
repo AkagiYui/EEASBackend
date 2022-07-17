@@ -25,6 +25,13 @@ public class UserController {
     @Resource
     private ITeacherService teacherService;
 
+    @GetMapping("/test")
+    public Boolean test() {
+        Teacher t = teacherService.getById("1");
+        t.setName("孙成坤");
+        return teacherService.updateById(t);
+    }
+
     // 登录，获取JWT
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "获取 JWT token")
@@ -54,13 +61,15 @@ public class UserController {
     @Operation(summary = "获取用户数据")
     public Result getUserInfo() {
         Teacher currentTeacher = TokenUtils.getCurrentTeacher();
-        TeacherInfoDTO teacherInfoDTO = new TeacherInfoDTO();
         if (currentTeacher == null) {
             return Result.error(HTTPCode.NOT_PERMIT, "未登录");
         }
+        TeacherInfoDTO teacherInfoDTO = new TeacherInfoDTO();
         BeanUtils.copyProperties(currentTeacher, teacherInfoDTO);
         return Result.success(teacherInfoDTO);
     }
+
+
 
     @Value("${spring.profiles.active}")
     private String isDev;

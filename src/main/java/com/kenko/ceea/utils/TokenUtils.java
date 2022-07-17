@@ -42,12 +42,14 @@ public class TokenUtils {
             assert requestAttributes != null;
             HttpServletRequest request = requestAttributes.getRequest();
             String token = request.getHeader("Authorization");
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
             if (StrUtil.isNotBlank(token)) {
                 String teacherId = JWT.decode(token).getAudience().get(0);
                 return staticTeacherService.getById(teacherId);
             }
-        } catch (Exception e) {
-            return null;
+        } catch (Exception ignored) {
         }
         return null;
     }

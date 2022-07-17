@@ -23,6 +23,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result handleException(Exception e) {
         log.error("Exception", e);
-        return Result.error(SYSTEM_ERROR, "System error");
+        return Result.error(SYSTEM_ERROR, "System Error");
     }
 }

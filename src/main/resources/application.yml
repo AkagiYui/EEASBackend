@@ -1,31 +1,36 @@
 spring:
   profiles:
+    # 未使用命令行时默认加载的profile，即application-prod.yml
     active: prod
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   servlet:
     multipart:
+      # 允许上传文件大小
       max-file-size: 10MB
+      # 最大请求大小
       max-request-size: 10MB
   datasource:
+    # 数据库驱动，这里是MySQL8
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
+      # 连接最大空闲时间，单位：毫秒
       max-lifetime: 30000
 
-mybatis:
+mybatis-plus:
+  configuration:
+    # 日志输出接口
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    # 启动时输出logo
+    banner: false
+  # mapper文件所在的目录
   mapper-locations: classpath:mapper/*.xml
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-log:
-  save: true
 logging:
   level:
+    # 一般日志级别
     root: info
+    # mybatis日志级别
+    org.mybatis: info
 
 springdoc:
   api-docs:
@@ -36,7 +41,9 @@ springdoc:
   swagger-ui:
     # 自定义swagger前端请求路径，访问 /docs 会自动重定向到swagger页面
     path: /docs
-    # 默认查询的 api json 地址
-    config-url: /v3/api-docs
   # 包扫描路径
   packages-to-scan: com.kenko.ceea.controller
+
+### 以下是自定义配置 ###
+log:
+  save: true

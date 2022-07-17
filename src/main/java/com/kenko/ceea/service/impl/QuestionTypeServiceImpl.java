@@ -1,7 +1,6 @@
 package com.kenko.ceea.service.impl;
 
 
-import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kenko.ceea.entity.QuestionType;
 import com.kenko.ceea.mapper.QuestionTypeMapper;

@@ -15,7 +15,9 @@ public enum Gender {
     }
 
     @EnumValue
+
     private final int code;
+
     @JsonValue
     private final String desc;
 }

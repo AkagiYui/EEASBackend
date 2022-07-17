@@ -29,7 +29,6 @@ public class CustomErrorController extends BasicErrorController {
     @Value("${server.error.path:${error.path:/error}}")
     private String path;
 
-    // TODO: 搞懂这个报错
     public CustomErrorController(ServerProperties serverProperties) {
         super(new DefaultErrorAttributes(), serverProperties.getError());
     }
