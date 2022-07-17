@@ -42,7 +42,7 @@ springdoc:
     # 自定义swagger前端请求路径，访问 /docs 会自动重定向到swagger页面
     path: /docs
   # 包扫描路径
-  packages-to-scan: com.kenko.ceea.controller
+  packages-to-scan: com.kenko.eeas.controller
 
 ### 以下是自定义配置 ###
 log:
