@@ -16,7 +16,7 @@ jobs:
         with:
           command: |
             cd /home/ceea
-            git clone https://ghproxy.com/https://github.com/AkagiYui/https://github.com/AkagiYui/EEASBackend.git build
+            git clone https://gitclone.com/github.com/AkagiYui/EEASBackend.git build
             cd build
             chmod +x ./gradlew
             ./gradlew build bootJar
