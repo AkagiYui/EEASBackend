@@ -1,8 +1,5 @@
 package com.kenko.eeas.controller;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.digest.HMac;
 import com.kenko.eeas.common.HTTPCode;
 import com.kenko.eeas.common.Result;
 import com.kenko.eeas.controller.dto.TeacherInfoDTO;
@@ -10,10 +7,10 @@ import com.kenko.eeas.controller.vo.LoginVO;
 import com.kenko.eeas.entity.Teacher;
 import com.kenko.eeas.service.ITeacherService;
 import com.kenko.eeas.utils.TokenUtils;
+import com.kenko.eeas.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,25 +22,14 @@ public class UserController {
     @Resource
     private ITeacherService teacherService;
 
-    @GetMapping("/test")
-    public Boolean test() {
-        Teacher t = teacherService.getById("1");
-        t.setName("孙成坤");
-        return teacherService.updateById(t);
-    }
-
     // 登录，获取JWT
     @PostMapping("/login")
     @Operation(summary = "用户登录", description = "获取 JWT token")
     public Result getUserJwt(@RequestBody LoginVO loginVO) {
-        String username = loginVO.getUsername();
-        String password = loginVO.getPassword();
-        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+        if (Utils.isUsernamePasswordBlank(loginVO)) {
             return Result.error(HTTPCode.PARAM_ERROR, "参数错误");
         }
-        HMac hMac = SecureUtil.hmacSha1("kenko");
-        String s = hMac.digestHex(loginVO.getPassword());
-        loginVO.setPassword(s);
+        Utils.encryptPassword(loginVO);
 
         Teacher teacher = teacherService.getOneTeacher(loginVO);
         if (teacher == null) {
@@ -69,27 +55,14 @@ public class UserController {
         return Result.success(teacherInfoDTO);
     }
 
-
-
-    @Value("${spring.profiles.active}")
-    private String isDev;
-
-    // 用户注册
-    @PostMapping("/register")
-    @Operation(summary = "用户注册")
+    // TODO: 新增用户
+    @PostMapping("/add")
+    @Operation(summary = "新增用户")
     public Result addUser(@RequestBody Teacher teacher) {
-        if (isDev.equals("prod")) {
-            return Result.error(HTTPCode.PARAM_ERROR, "生产环境该接口不可用");
-        }
-        String username = teacher.getUsername();
-        String password = teacher.getPassword();
-        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+        if (Utils.isUsernamePasswordBlank(teacher)) {
             return Result.error(HTTPCode.PARAM_ERROR, "参数错误");
         }
-
-        HMac hMac = SecureUtil.hmacSha1("kenko");
-        String s = hMac.digestHex(teacher.getPassword());
-        teacher.setPassword(s);
+        Utils.encryptPassword(teacher);
         return Result.success(teacherService.register(teacher));
     }
 }

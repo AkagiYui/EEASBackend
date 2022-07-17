@@ -37,4 +37,3 @@ jobs:
           name: build-artifact
           path: build/*
           if-no-files-found: error
-

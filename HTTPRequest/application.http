@@ -1,8 +1,26 @@
 ### hello1
 GET http://localhost:9090
 
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.code === 200, "Response status is not 200");
+});
+%}
+
 ### hello2
 GET http://localhost:9090/
 
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.code === 200, "Response status is not 200");
+});
+%}
+
 ### no this api
 GET http://localhost:9090/eee
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.code === 404, "Response status is not 200");
+});
+%}

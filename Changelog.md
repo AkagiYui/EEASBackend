@@ -1,3 +1,12 @@
+## 0.3.1
+
+- 移除了Maven配置，项目使用Gradle构建
+- 移除了GitHub Actions的Maven构建任务
+- 完善了README文档
+- `com.auth0:java-jwt`库升级为`3.19.2`版本
+- `用户注册`接口修改为`新增用户`接口
+- 新增了自定义静态工具类
+
 ## 0.3.0
 
 - 添加 Apache 2.0 许可证
