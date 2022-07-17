@@ -2,28 +2,31 @@ name: Deploy to Server
 
 on:
   workflow_dispatch:
-#  push:
-#    branches: [ "master" ]
-#  pull_request:
-#    branches: [ "master" ]
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Container
+      - name: Build and Deploy
         uses: fifsky/ssh-action@master
         with:
           command: |
             cd /home/ceea
             git clone https://ghproxy.com/https://github.com/AkagiYui/https://github.com/AkagiYui/EEASBackend.git build
             cd build
-            mvn -B install --file pom.xml
-            docker build -f Dockerfile.deploy -t ceea-backend .
+#            mvn -B install --file pom.xml
+            chmod +x ./gradlew
+            ./gradlew build bootJar
+            mv ./build/libs/EEASBackend.jar ./release.jar
+            docker build -f Dockerfile.deploy -t EEASBackend .
             cd ..
             rm -rf build
-            docker container rm -f ceea-backend
-            docker run -d --name ceea-backend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 ceea-backend
+            docker container rm -f EEASBackend
+            docker run -d --name EEASBackend --restart=on-failure:3 -v /home/ceea/data:/data -p 9090:9090 EEASBackend
             docker image prune -f
             docker volume prune -f
           host: ${{ secrets.SERVER_HOST }}
