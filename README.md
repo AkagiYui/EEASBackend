@@ -4,9 +4,9 @@ Engineering Education Accreditation System Backend
 
 将为高校实现完整的学生成绩评定以及回访功能。
 
-[该仓库](https://github.com/AkagiYui/EEASBackend)仅为后端服务，前端服务请前往[EEASFrontend](https://github.com/AkagiYui/EEASFronted)
+[该仓库](https://github.com/AkagiYui/EEASBackend)仅实现后端服务，前端服务请前往[eeas-frontend](https://github.com/AkagiYui/eeas-fronted)
 
-> 注意！这只是个人学生学习Java的作品，谨慎用于生产环境！
+> 注意！这只是个人学习 Java 的作品，谨慎用于生产环境！
 > 
 > 由于这是本人的第一个 Java 项目，各种不规范请**指出**，以帮助我改进，感谢！
 
@@ -29,6 +29,8 @@ Java版本: [liberica 17.0.3.1](https://bell-sw.com/) [下载地址](https://bel
 构建工具: [Gradle 7.4.1](https://gradle.org/) [下载地址](https://gradle.org/next-steps/?version=7.4.2&format=bin)
 
 关系型数据库: [MySQL 8.0.29](https://www.mysql.com/) [下载地址](https://dev.mysql.com/downloads/mysql/8.0.29.html)
+
+自动构建: [GitHub Actions](https://https://docs.github.com/cn/actions)
 
 #### Java库 Java Library
 

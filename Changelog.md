@@ -1,8 +1,13 @@
+## 0.3.2
+
+- 移除了 Jenkins 的支持
+- 修复了 Gitee 仓库同步错误的问题
+
 ## 0.3.1
 
-- 移除了Maven配置，项目使用Gradle构建
-- 移除了GitHub Actions的Maven构建任务
-- 完善了README文档
+- 移除了 Maven 配置，项目使用 Gradle 构建
+- 移除了 GitHub Actions 的 Maven 构建任务
+- 完善了 README 文档
 - `com.auth0:java-jwt`库升级为`3.19.2`版本
 - `用户注册`接口修改为`新增用户`接口
 - 新增了自定义静态工具类
